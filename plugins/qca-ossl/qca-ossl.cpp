@@ -4709,6 +4709,39 @@ public:
 			return ErrorDecode;
 		}
 
+#if 0
+		// convert to traditional PKCS#1 key, for QSslKey loading compatibility
+//		if (pkey->type != EVP_PKEY_RSA)
+//		{
+		RSA *rsa = EVP_PKEY_get1_RSA(pkey);
+		EVP_PKEY *rkey;
+		rkey = EVP_PKEY_new();
+//		EVP_PKEY_set1_RSA(rkey, rsa);
+//		RSA *rrsa = EVP_PKEY_get1_RSA(rkey);
+
+//		rkey = EVP_PKEY_new();
+		EVP_PKEY_assign_RSA(rkey, rsa);
+
+//		if(pkey)
+//			EVP_PKEY_free(pkey);
+		pkey = rkey;
+//		if (rsa != NULL)
+//			RSA_free(rsa);
+//		if (bi != NULL)
+//			BIO_free_all(bi);
+
+//		PEM_write_RSAPrivateKey(stdout, rsa, NULL, NULL, 0, NULL, NULL);
+//		PEM_write_bio_RSAPrivateKey(bi, rsa, NULL, NULL, 0, NULL, NULL);
+
+//		PEM_write_bio_PrivateKey(bi, pkey, NULL, NULL, 0, NULL, NULL);
+		if (rkey != NULL)
+			EVP_PKEY_free(rkey);
+		if (rsa != NULL)
+			RSA_free(rsa);
+//		if (rrsa != NULL)
+//			RSA_free(rrsa);
+#endif
+
 		// TODO: require cert
 
 		int aliasLength;
